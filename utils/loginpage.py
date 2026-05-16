@@ -5,18 +5,17 @@ from selenium.webdriver.common.by import By
 driver = webdriver.Chrome()
 
 def login(driver):
-    driver.get("https://www.saucedemo.com/")
+    driver.get("https://www.saucedemo.com/") # URL de la página de login de Sauce Demo
 
-    # ingresar usuario
-    usuario = driver.find_element(By.ID, "user-name")
+    usuario = driver.find_element(By.ID, "user-name") # ingreso de usuario
     usuario.send_keys("standard_user")
 
-    # ingresar contraseña
-    password = driver.find_element(By.ID, "password")
+    password = driver.find_element(By.ID, "password") # ingreso de contraseña
     password.send_keys("secret_sauce")
 
-    # click login
-    driver.find_element(By.ID, "login-button").click()
+    driver.find_element(By.ID, "login-button").click() # click en el botón de login
+
+    print("Login exitoso") # Imprimir mensaje de éxito en la consola
 
 try:
     login(driver)

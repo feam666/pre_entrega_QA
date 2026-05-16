@@ -1,110 +1,81 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 
-def test_cart(login_in_driver):
-    driver = login_in_driver
+@pytest.fixture
+def driver_logged(login_in_page):
 
-    # Agregar producto al carrito
-    driver.find_elements(By.CLASS_NAME, "btn_inventory")[0].click()
-    
-    # Verificar contador carrito
-    contador_cart = driver.find_element(By.CLASS_NAME, "shopping_cart_badge")
+    driver = login_in_page
 
-    assert contador_cart.text == "1", "La cantidad de productos no se agregaron correctamente"
-
-    # Obtener nombre del primer producto
-    product_name = driver.find_elements(By.CLASS_NAME, "inventory_item_name")[0].text
-
-    # Ir al carrito
-    driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
-
-    # Obtener el nombre del producto en el carrito
-    cart_item = driver.find_element(By.CLASS_NAME, "inventory_item_name").text
-
-    # Verificar el producto agregado en el carrito
-    assert cart_item == product_name, "El producto agregado no coincide"
-
-    #------------------------------------------
-
-    from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import pytest
+    return driver
 
 
-def test_add_product_to_cart(login_in_driver):
+def test_cart(driver_logged):
 
-    driver = login_in_driver
+    driver = driver_logged
 
-    # ------------------------------------------------
-    # 1 - Obtener nombre del primer producto
-    # ------------------------------------------------
-
-    first_product_name = driver.find_elements(
+    # Obtener el primer producto
+    primer_producto = driver.find_elements(
         By.CLASS_NAME,
-        "inventory_item_name"
-    )[0].text
-
-    print(f"\nProducto seleccionado: {first_product_name}")
-
-
-    # ------------------------------------------------
-    # 2 - Agregar producto al carrito
-    # ------------------------------------------------
-
-    add_to_cart_button = driver.find_elements(
-        By.CLASS_NAME,
-        "btn_inventory"
+        "inventory_item"
     )[0]
 
-    add_to_cart_button.click()
+    # Guardar nombre del producto
+    nombre_producto = primer_producto.find_element(
+        By.CLASS_NAME,
+        "inventory_item_name"
+    ).text
 
-    print("Producto agregado al carrito")
+    # Guardar precio del producto
+    precio_producto = primer_producto.find_element(
+        By.CLASS_NAME,
+        "inventory_item_price"
+    ).text
 
+    print(f"Producto agregado: {nombre_producto}")
+    print(f"Precio: {precio_producto}")
 
-    # ------------------------------------------------
-    # 3 - Verificar contador del carrito
-    # ------------------------------------------------
-
-    cart_badge = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located(
-            (By.CLASS_NAME, "shopping_cart_badge")
-        )
+    # Agregar primer producto al carrito
+    boton_agregar = primer_producto.find_element(
+        By.CLASS_NAME,
+        "btn_inventory"
     )
 
-    assert cart_badge.text == "1", \
-        "El contador del carrito no se actualizó correctamente"
+    boton_agregar.click()
 
-    print(f"Contador del carrito: {cart_badge.text}")
+    # Verificar contador del carrito
+    contador_carrito = driver.find_element(
+        By.CLASS_NAME,
+        "shopping_cart_badge"
+    )
 
+    assert contador_carrito.text == "1", \
+        "El contador del carrito no se incrementó correctamente"
 
-    # ------------------------------------------------
-    # 4 - Navegar al carrito
-    # ------------------------------------------------
-
+    # Navegar al carrito
     driver.find_element(
         By.CLASS_NAME,
         "shopping_cart_link"
     ).click()
 
-    print("Ingreso al carrito correctamente")
-
-
-    # ------------------------------------------------
-    # 5 - Verificar producto en el carrito
-    # ------------------------------------------------
-
-    cart_product_name = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located(
-            (By.CLASS_NAME, "inventory_item_name")
-        )
+    # Verificar ítem en carrito
+    producto_carrito = driver.find_element(
+        By.CLASS_NAME,
+        "inventory_item_name"
     ).text
 
-    assert cart_product_name == first_product_name, \
-        "El producto agregado no coincide con el del carrito"
+    precio_carrito = driver.find_element(
+        By.CLASS_NAME,
+        "inventory_item_price"
+    ).text
 
-    print(f"Producto en carrito: {cart_product_name}")
+    # Comprobar producto correcto
+    assert producto_carrito == nombre_producto, \
+        "El producto agregado no coincide"
 
-    print("\nTest de carrito ejecutado correctamente")
+    assert precio_carrito == precio_producto, \
+        "El precio del producto no coincide"
+
+    print("Producto validado correctamente en el carrito")

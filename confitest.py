@@ -8,10 +8,8 @@ def driver():
     options = webdriver.ChromeOptions()    
     options.add_argument("--incognito")  # Ejecuta el navegador en modo incógnito
     options.add_argument("--headless")  # Ejecuta el navegador en modo headless (Sin interfaz gráfica)
+    options.add_argument("--start-maximized") # Ejecuta el navegador en modo maximizado
 
-
-    
-    
     driver = webdriver.Chrome(options = options)
 
     yield driver

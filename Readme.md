@@ -1,17 +1,33 @@
-# proyecyo de automatizacion QA - Fernando Ezequiel Abalo Mustacato
+# Proyecto de automatizacion QA - Fernando Ezequiel Abalo Mustacato
+
 ## descripcion
-el objertio del protecto es automartizar distintas pruebas duncionasles de una aplicacion web
+Este proyecto consiste en la automatización de pruebas funcionales sobre la página web de pruebas:
+
+https://www.saucedemo.com/
+
+El objetivo principal es validar funcionalidades básicas de la aplicación utilizando automatización con Selenium y Pytest.
+
+Las pruebas automatizadas incluyen:
+
+- Login de usuario
+- Validación de inventario
+- Validación de elementos de interfaz
+- Agregado de productos al carrito
+- Verificación de productos en carrito
 
 ## tecnolgias usadas
-- pythin
-- selenum
-- pytest
+- Python
+- Pytest
+- Selenium WebDriver
+- Google Chrome
+- ChromeDriver
+- Visual Studio Code
 - pytest html
 - git
 
  # instalacion
 
- `git clone https:....`
+ `git clone https://github.com/feam666/pre_entrega_QA`
 
  ## instalacion dependencias
 
